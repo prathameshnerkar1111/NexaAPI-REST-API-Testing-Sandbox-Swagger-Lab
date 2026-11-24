@@ -1,32 +1,51 @@
-# NexaAPI — REST API Testing Sandbox & Swagger Lab
+# NexaAPI — Functional API Testing with Postman QA Documentation
 
-A standalone, zero-dependency REST API testing sandbox and interactive Swagger-style lab built for manual API testing and automation practice with **Playwright (`APIRequestContext`)**, **REST Assured**, and **Postman**.
-
-🔗 **Live Demo:** `https://prathameshnerkar1111.github.io/nexaapi-qa-sandbox/`
+Industry-level Functional API QA documentation suite (aligned with **IEEE 829 / ISO/IEC/IEEE 29119**) and importable **Postman Collection v2.1** for **NexaAPI — REST API Testing Sandbox & Swagger Lab**.
 
 ---
 
-## ✨ Key Features
+## Repository Structure
 
-* **Swagger-Style Endpoint Explorer:** 13 pre-configured endpoints across **Auth**, **Users CRUD**, **Orders CRUD**, and **Status & Chaos** simulators with `localStorage` persistence.
-* **Postman-Style Request Builder:** Edit query parameters, custom headers (including a 1-click `Idempotency-Key` generator), and JSON request bodies.
-* **Response Inspector & Assertions:** View color-coded HTTP status codes, response latency, payload size, syntax-highlighted JSON, response headers, and automated assertion checks.
-* **1-Click JWT Auth Injection:** Authenticate once and click **Use Token** to automatically attach the Bearer JWT to subsequent requests.
-* **Live Code Generator:** Dynamically generates ready-to-run **Playwright TypeScript**, **REST Assured (Java)**, and **cURL** snippets for any active request.
-* **Real Local HTTP Server (`server.js`):** Download a zero-dependency Node.js server directly from the UI to run real HTTP requests against `http://localhost:3000`.
-* **Postman Collection v2.1 Export:** Download a pre-built `.json` collection and import it straight into Postman.
-* **QA Chaos Bar:** Inject global latency (`0ms`–`3000ms`), force `429 Rate Limit` or `500 Server Error` faults, and monitor the active JWT role (`None` / `USER` / `ADMIN`).
+```text
+├── docs/qa/
+│   ├── README.md                              # QA Documentation Hub (this file)
+│   ├── 01_API_Test_Plan.md                    # Master API Test Plan (Scope, Strategy, Entry/Exit, Risks)
+│   ├── 02_API_Test_Scenarios.md               # 12 High-Level API Scenarios (TS-01 to TS-12)
+│   ├── 03_Functional_API_Test_Cases.md        # 45 Detailed API Test Cases (TC-001 to TC-045)
+│   ├── 04_Requirements_Traceability_Matrix.md # Bi-Directional RTM (REQ-API -> TS -> TC)
+│   ├── 05_Test_Data_and_BVA_Matrix.md         # Personas, BVA & Negative/Security Payloads
+│   ├── 06_Postman_Test_Scripts_Guide.md       # Reusable pm.test Scripts & Newman CLI Guide
+│   ├── 07_Defect_Report_Template_and_Log.md   # Jira API Bug Template & Defect Log (BUG-401 to BUG-403)
+│   └── 08_Test_Summary_and_SignOff_Report.md  # Test Closure Report & Go/No-Go Sign-Off
+└── postman/
+    ├── NexaAPI_Functional_Suite.postman_collection.json
+    └── NexaAPI_Local.postman_environment.json
+```
 
 ---
 
-## 🚀 Quick Start
+## Coverage Snapshot
 
-### Option 1: Use Online (GitHub Pages)
-1. Open the live URL in your browser.
-2. Explore endpoints, send requests, and inspect responses using the built-in browser mock engine.
+| Metric | Count |
+| :--- | :---: |
+| **API Functional Requirements** | 10 (`REQ-API-01` – `REQ-API-10`) |
+| **High-Level API Scenarios** | 12 (`TS-01` – `TS-12`) |
+| **Total Functional API Test Cases** | 45 (`TC-001` – `TC-045`) |
+| **Positive / Negative / Edge / Security** | 16 / 16 / 8 / 5 |
+| **Priority Breakdown (P0 / P1 / P2)** | 19 / 21 / 5 |
+| **Logged API Review Defects** | 3 (`BUG-401` – `BUG-403`) |
 
-### Option 2: Run Real HTTP Server Locally (for Postman, REST Assured & Playwright)
-1. Open the NexaAPI web app and click **Download `server.js`**.
-2. Start the zero-dependency Node.js server in your terminal:
-   ```bash
-   node server.js
+---
+
+## Quick Start with Postman & Newman
+
+1. Open **Postman** -> click **Import** -> select both JSON files from the `postman/` folder.
+2. Select the **NexaAPI — Local / Sandbox** environment in the top-right dropdown and verify `baseUrl` (default: `http://localhost:3000`).
+3. Run the entire collection via **Collection Runner**, or execute headlessly via **Newman**:
+
+```bash
+npm install -g newman newman-reporter-htmlextra
+newman run postman/NexaAPI_Functional_Suite.postman_collection.json \
+  -e postman/NexaAPI_Local.postman_environment.json \
+  -r cli,htmlextra --reporter-htmlextra-export reports/nexaapi-report.html
+```
